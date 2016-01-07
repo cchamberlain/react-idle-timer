@@ -7,5 +7,5 @@ npm-debug.log
 npm-shrinkwrap.json
 
 # These go to npm, unnecessary for .gitignore
-build/
-examples/
+/build/
+/examples/
