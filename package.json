@@ -15,8 +15,8 @@
     "rebuild:production:windows": "set NODE_ENV=production&& npm run rebuild",
     "start": "node examples/server",
     "test": "npm test",
-    "prepublish": "in-publish && npm shrinkwrap || not-in-publish",
-    "postpublish": "rimraf npm-shrinkwrap.json",
+    "_prepublish": "in-publish && npm shrinkwrap || not-in-publish",
+    "_postpublish": "rimraf npm-shrinkwrap.json",
     "package": "npm run rebuild:production && npm version patch && npm publish --tag latest",
     "package:windows": "npm run rebuild:production:windows && npm version patch && npm publish --tag latest"
   },
