@@ -11,11 +11,14 @@
     "clean": "rimraf build && rimraf examples/App.js && rimraf examples/init.js && rimraf examples/server.js",
     "build": "babel src -d build && babel src_examples -d examples",
     "rebuild": "npm run clean && npm run build",
+    "rebuild:production": "NODE_ENV=production && npm run rebuild",
+    "rebuild:production:windows": "set NODE_ENV=production&& npm run rebuild",
     "start": "node examples/server",
     "test": "npm test",
     "prepublish": "in-publish && npm shrinkwrap || not-in-publish",
     "postpublish": "rimraf npm-shrinkwrap.json",
-    "package": "npm run rebuild && npm version patch && npm publish --tag latest"
+    "package": "npm run rebuild:production && npm version patch && npm publish --tag latest",
+    "package:windows": "npm run rebuild:production:windows && npm version patch && npm publish --tag latest"
   },
   "keywords": [
     "react",
