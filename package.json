@@ -3,24 +3,26 @@
   "version": "1.2.8",
   "description": "Activity detection for React.js",
   "main": "lib/index.js",
+  "browser": "lib/browser.js",
   "files": [
     "lib",
     "examples"
   ],
   "scripts": {
-    "clean": "rimraf build && rimraf examples/App.js && rimraf examples/init.js && rimraf examples/server.js",
-    "build": "babel src -d build && babel src_examples -d examples",
-    "build:prod": "webpack --config webpack.ext.config.js --progress --profile --colors",
+    "clean": "rimraf build && rimraf lib && rimraf examples/App.js && rimraf examples/init.js && rimraf examples/server.js",
+    "build": " babel src_examples -d examples && webpack --config webpack.prod.config.js --progress --profile --colors",
+    "_build": "babel src -d lib && babel src_examples -d examples",
+    "_build:browser": "webpack --config webpack.prod.config.js --progress --profile --colors",
     "rebuild": "npm run clean && npm run build",
-    "rebuild:prod": "npm run clean && npm run build:prod",
-    "_rebuild:production": "NODE_ENV=production npm run rebuild",
-    "_rebuild:production:windows": "set NODE_ENV=production&& npm run rebuild",
+    "rebuild:prod": "NODE_ENV=production npm run clean && npm run build && npm run build:browser",
+    "rebuild:prod:windows": "set NODE_ENV=production&& npm run clean && npm run build && npm run build:browser",
     "start": "node examples/server",
     "test": "npm test",
     "_prepublish": "in-publish && npm shrinkwrap || not-in-publish",
     "_postpublish": "rimraf npm-shrinkwrap.json",
-    "package": "npm run rebuild:prod && npm version patch && npm publish --tag latest",
-    "package:windows": "npm run rebuild:production:windows && npm version patch && npm publish --tag latest"
+    "package": "npm run rebuild && npm version patch && npm publish --tag latest",
+    "_package": "npm run rebuild:prod && npm version patch && npm publish --tag latest",
+    "package:windows": "npm run rebuild:prod:windows && npm version patch && npm publish --tag latest"
   },
   "keywords": [
     "react",
