@@ -8,4 +8,5 @@ npm-shrinkwrap.json
 
 # These go to npm, unnecessary for .gitignore
 /build/
+/lib/
 /examples/

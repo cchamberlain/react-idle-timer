@@ -10,7 +10,7 @@ import React,{ Component, PropTypes } from 'react'
 import moment from 'moment';
 import bindAll from 'lodash.bindall'
 
-class IdleTimer extends Component {
+export default class IdleTimer extends Component {
   constructor(props) {
     super(props)
     this.state =  { idle: false
@@ -241,6 +241,3 @@ IdleTimer.defaultProps =  { timeout: 1000 * 60 * 20  // 20 minutes
                           , activeAction: () => {}
                           , element: document
                           }
-
-module.exports = IdleTimer
-module.exports['default'] = IdleTimer
