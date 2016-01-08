@@ -20,9 +20,10 @@
     "test": "npm test",
     "_prepublish": "in-publish && npm shrinkwrap || not-in-publish",
     "_postpublish": "rimraf npm-shrinkwrap.json",
-    "package": "npm run rebuild && npm version patch && npm publish --tag latest",
+    "package": "NODE_ENV=production npm run rebuild && npm version patch && npm publish --tag latest",
+    "package:windows": "set NODE_ENV=production&& npm run rebuild && npm version patch && npm publish --tag latest",
     "_package": "npm run rebuild:prod && npm version patch && npm publish --tag latest",
-    "package:windows": "npm run rebuild:prod:windows && npm version patch && npm publish --tag latest"
+    "_package:windows": "npm run rebuild:prod:windows && npm version patch && npm publish --tag latest"
   },
   "keywords": [
     "react",
