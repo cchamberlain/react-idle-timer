@@ -23,8 +23,8 @@ function make(name) {
           , devtool: 'inline-source-map'
           , target: 'node'
           , cache: false
-          , entry:  { index: './src/index'
-                    , events: './src/events'
+          , entry:  { events: [ './src/events' ]
+                    , index: './src/index'
                     }
           , resolve: { extensions: ['', '.jsx', '.js'] }
           , output: { libraryTarget: 'commonjs2'
