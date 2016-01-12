@@ -23,11 +23,13 @@ function make(name) {
           , devtool: 'inline-source-map'
           , target: 'node'
           , cache: false
-          , entry: './src/index'
+          , entry:  { index: './src/index'
+                    , events: './src/events'
+                    }
           , resolve: { extensions: ['', '.jsx', '.js'] }
           , output: { libraryTarget: 'commonjs2'
-                    , path: path.join(__dirname, 'libtest')
-                    , filename: 'index.js'
+                    , path: path.join(__dirname, 'lib')
+                    , filename: '[name].js'
                     }
           , externals: [/^[a-z\-0-9]+$/] // fs.readdirSync('node_modules').map(module => `commonjs ${module}`)
           , plugins:  [ new webpack.optimize.OccurenceOrderPlugin(true) ]

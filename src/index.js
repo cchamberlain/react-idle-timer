@@ -7,10 +7,34 @@
  */
 
 import React,{ Component, PropTypes } from 'react'
-import moment from 'moment';
+import moment from 'moment'
 import bindAll from 'lodash.bindall'
+import { addEvent, removeEvent } from './events'
 
 export default class IdleTimer extends Component {
+  static propTypes =  { timeout: PropTypes.number     // Activity timeout
+                      , events: PropTypes.arrayOf(PropTypes.string)  // Activity events to bind
+                      , idleAction: PropTypes.func    // Action to call when user becomes inactive
+                      , activeAction: PropTypes.func  // Action to call when user becomes active
+                      , element: PropTypes.oneOfType([PropTypes.object, PropTypes.string]) // Element ref to watch activty on
+                      , format: PropTypes.string
+                      };
+  static defaultProps = { timeout: 1000 * 60 * 20  // 20 minutes
+                        , events: [ 'mousemove'
+                                  , 'keydown'
+                                  , 'wheel'
+                                  , 'DOMMouseScroll'
+                                  , 'mouseWheel'
+                                  , 'mousedown'
+                                  , 'touchstart'
+                                  , 'touchmove'
+                                  , 'MSPointerDown'
+                                  , 'MSPointerMove'
+                                  ]
+                        , idleAction: () => {}
+                        , activeAction: () => {}
+                        , element: document
+                        };
   constructor(props) {
     super(props)
     this.state =  { idle: false
@@ -26,11 +50,11 @@ export default class IdleTimer extends Component {
   }
 
   componentWillMount() {
-    this.props.events.forEach(e => this.props.element.addEventListener(e, this._handleEvent))
+    this.props.events.forEach(name => addEvent(this.props.element, name, this._handleEvent))
   }
 
   componentWillUnmount() {
-    this.props.events.forEach(e => this.props.element.removeEventListener(e, this._handleEvent))
+    this.props.events.forEach(name => removeEvent(this.props.element, name, this._handleEvent))
   }
 
   render() {
@@ -216,28 +240,3 @@ export default class IdleTimer extends Component {
     return this.state.idle
   }
 }
-
-IdleTimer.propTypes = { timeout: PropTypes.number     // Activity timeout
-                      , events: PropTypes.arrayOf(PropTypes.string)  // Activity events to bind
-                      , idleAction: PropTypes.func    // Action to call when user becomes inactive
-                      , activeAction: PropTypes.func  // Action to call when user becomes active
-                      , element: PropTypes.oneOfType([PropTypes.object, PropTypes.string]) // Element ref to watch activty on
-                      , format: PropTypes.string
-                      }
-
-IdleTimer.defaultProps =  { timeout: 1000 * 60 * 20  // 20 minutes
-                          , events: [ 'mousemove'
-                                    , 'keydown'
-                                    , 'wheel'
-                                    , 'DOMMouseScroll'
-                                    , 'mouseWheel'
-                                    , 'mousedown'
-                                    , 'touchstart'
-                                    , 'touchmove'
-                                    , 'MSPointerDown'
-                                    , 'MSPointerMove'
-                                    ]
-                          , idleAction: () => {}
-                          , activeAction: () => {}
-                          , element: document
-                          }

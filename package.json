@@ -75,6 +75,7 @@
     "gulp-util": "^3.0.6",
     "jest-cli": "^0.4.13",
     "lodash.bindall": "^3.1.0",
+    "lodash.noop": "^3.0.0",
     "react-transform-catch-errors": "^1.0.0",
     "react-transform-hmr": "^1.0.1",
     "redbox-react": "^1.0.1",
