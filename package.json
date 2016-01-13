@@ -1,6 +1,6 @@
 {
   "name": "react-idle-timer-babel6",
-  "version": "1.2.13",
+  "version": "1.2.14",
   "description": "Activity detection for React.js",
   "main": "lib/index.js",
   "browser": "lib/browser.js",
