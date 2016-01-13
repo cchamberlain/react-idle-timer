@@ -10,12 +10,10 @@
 export const addEvent = (obj, type, fn, useCapture = false) => {
   if (obj.addEventListener) {
     obj.addEventListener(type, fn, useCapture)
-    EventCache.add(obj, type, fn)
   } else if (obj.attachEvent) {
     obj[`e${type}${fn}`] = fn
     obj[type+fn] = () => { obj[`e${type}${fn}`](window.event) }
     obj.attachEvent(`on${type}`, obj[type+fn])
-    EventCache.add(obj, type, fn)
   } else {
     obj['on'+type] = obj['e'+type+fn]
   }
@@ -33,17 +31,3 @@ export const removeEvent = (obj, type, fn, useCapture = false) => {
   if(obj[type])
     obj[type] = null
 }
-
-let EventCache = function(){
-  let listEvents = []
-  return  { listEvents
-          , add: (node, sEventName, fHandler) => listEvents.push(arguments)
-          , flush: () => {
-              var i, item
-              while((item = listEvents.pop()) != null)
-                removeEvent(...item)
-            }
-          }
-}()
-
-addEvent(window,'unload',EventCache.flush)

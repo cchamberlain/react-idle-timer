@@ -45,16 +45,19 @@ export default class IdleTimer extends Component {
                   , pageX: null
                   , pageY: null
                   }
-
+    this.isComponentMounted = false
     bindAll(this, ['_toggleIdleState', '_handleEvent', 'reset', 'pause', 'resume', 'getRemainingTime', 'getElapsedTime', 'getLastActiveTime', 'isIdle'])
   }
 
   componentWillMount() {
     this.props.events.forEach(name => addEvent(this.props.element, name, this._handleEvent))
   }
-
+  componentDidMount() {
+    this.isComponentMounted = true
+  }
   componentWillUnmount() {
     this.props.events.forEach(name => removeEvent(this.props.element, name, this._handleEvent))
+    this.isComponentMounted = false
   }
 
   render() {
@@ -73,14 +76,16 @@ export default class IdleTimer extends Component {
    */
 
   _toggleIdleState() {
-    // Set the state
-    this.setState({ idle: !this.state.idle });
+    if(this.isComponentMounted){
+      // Set the state
+      this.setState({ idle: !this.state.idle });
 
-    // Fire the appropriate action
-    if(!this.state.idle)
-      this.props.activeAction();
-    else
-      this.props.idleAction();
+      // Fire the appropriate action
+      if(!this.state.idle)
+        this.props.activeAction();
+      else
+        this.props.idleAction();
+    }
   }
 
   /**
@@ -91,6 +96,11 @@ export default class IdleTimer extends Component {
    *
    */
   _handleEvent(e) {
+    if(!this.isComponentMounted) {
+      if(this.state)
+        clearTimeout(this.state.tId)
+      return
+    }
 
     // Already idle, ignore events
     if (this.state.remaining) return
@@ -136,7 +146,11 @@ export default class IdleTimer extends Component {
 
   reset() {
     // reset timers
-    clearTimeout(this.state.tId);
+    if(this.state)
+      clearTimeout(this.state.tId);
+
+    if(!this.isComponentMounted)
+      return
 
     // reset settings
     this.setState({ idle: false
@@ -155,6 +169,12 @@ export default class IdleTimer extends Component {
    *
    */
   pause() {
+    if(!this.isComponentMounted) {
+      if(this.state)
+        clearTimeout(this.state.tId)
+      return
+    }
+
     // this is already paused
     if(this.state.remaining !== null)
       return
@@ -173,6 +193,9 @@ export default class IdleTimer extends Component {
    *
    */
   resume() {
+    if(!this.isComponentMounted)
+      return
+
     // this isn't paused yet
     if(this.state.remaining === null )
       return
