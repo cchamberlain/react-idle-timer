@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react'
-import IdleTimer from '../build/index'
+import IdleTimer from '../lib/index'
 import bindAll from 'lodash.bindall'
 
 class App extends Component {

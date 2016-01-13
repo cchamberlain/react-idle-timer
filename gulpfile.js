@@ -60,7 +60,7 @@ gulp.task('lint', function() {
 // Dev Build  //
 ////////////////
 
-gulp.task("build-dev", function(callback) {
+gulp.task('build-dev', function(callback) {
 
     new WebpackDevServer(webpack(WebpackDevConfig), {
         watch: true,

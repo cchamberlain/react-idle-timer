@@ -10,22 +10,16 @@
   ],
   "scripts": {
     "clean": "rimraf build && rimraf lib && rimraf examples/App.js && rimraf examples/init.js && rimraf examples/server.js",
-    "build": " babel src_examples -d examples && webpack --config webpack.prod.config.js --progress --profile --colors",
-    "build:test": "webpack --config webpack.prod.config.js --progress --profile --colors",
-    "_build": "babel src -d lib && babel src_examples -d examples",
-    "_build:browser": "webpack --config webpack.prod.config.js --progress --profile --colors",
+    "build": "babel src_examples -d examples && webpack --config webpack.prod.config.js --progress --profile --colors",
+    "build-hot": "NODE_ENV=hot babel src_examples -d examples && webpack --config webpack.hot.config.js --progress --profile --colors",
+    "build-hot-windows": "set NODE_ENV=hot&& babel src_examples -d examples && webpack --config webpack.hot.config.js --progress --profile --colors",
     "rebuild": "npm run clean && npm run build",
-    "rebuild:test": "set NODE_ENV=production&& rimraf libtest && npm run build:test",
-    "_rebuild:prod": "NODE_ENV=production npm run clean && npm run build && npm run build:browser",
-    "_rebuild:prod:windows": "set NODE_ENV=production&& npm run clean && npm run build && npm run build:browser",
     "start": "node examples/server",
-    "test": "npm test",
-    "_prepublish": "in-publish && npm shrinkwrap || not-in-publish",
-    "_postpublish": "rimraf npm-shrinkwrap.json",
+    "restart-hot": "npm run clean && npm run build-hot && npm start",
+    "restart-hot-windows": "npm run clean && npm run build-hot-windows && npm start",
+    "test": "echo \"Need some tests\"",
     "package": "NODE_ENV=production npm run rebuild && npm version patch && npm publish --tag latest",
-    "package:windows": "set NODE_ENV=production&& npm run rebuild && npm version patch && npm publish --tag latest",
-    "_package": "npm run rebuild:prod && npm version patch && npm publish --tag latest",
-    "_package:windows": "npm run rebuild:prod:windows && npm version patch && npm publish --tag latest"
+    "package-windows": "set NODE_ENV=production&& npm run rebuild && npm version patch && npm publish --tag latest"
   },
   "keywords": [
     "react",
@@ -45,8 +39,9 @@
     "url": "https://github.com/supremetechnopriest/react-idle-timer.git"
   },
   "dependencies": {
-    "in-publish": "^2.0.0",
-    "moment": "^2.10.3",
+    "moment": "^2.10.3"
+  },
+  "peerDependencies": {
     "react": "^0.14.3",
     "react-dom": "^0.14.3"
   },
@@ -74,7 +69,6 @@
     "gulp-util": "^3.0.6",
     "jest-cli": "^0.4.13",
     "lodash.bindall": "^3.1.0",
-    "lodash.noop": "^3.0.0",
     "react-transform-catch-errors": "^1.0.0",
     "react-transform-hmr": "^1.0.1",
     "redbox-react": "^1.0.1",

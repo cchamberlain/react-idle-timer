@@ -1,14 +1,11 @@
 /**
  * Events
+ * addEventListener / removeEventListener polyfill to support all browsers.
  *
- * @author Cole Chamberlain
+ * @author Cole Chamberlain (upgraded from http://www.dustindiaz.com/rock-solid-addevent/)
  * @module events.js
  *
  */
-
-
-/** SHIM TO SUPPORT ALL BROWSER EVENTS */
-import noop from 'lodash.noop'
 
 export const addEvent = (obj, type, fn, useCapture = false) => {
   if (obj.addEventListener) {
@@ -33,7 +30,8 @@ export const removeEvent = (obj, type, fn, useCapture = false) => {
   if(obj.detachEvent){
     obj.detachEvent(type, fn)
   }
-  obj[type] = noop()
+  if(obj[type])
+    obj[type] = null
 }
 
 let EventCache = function(){
@@ -42,10 +40,8 @@ let EventCache = function(){
           , add: (node, sEventName, fHandler) => listEvents.push(arguments)
           , flush: () => {
               var i, item
-              for(i = listEvents.length - 1; i >= 0; i = i - 1){
-                item = listEvents[i]
+              while((item = listEvents.pop()) != null)
                 removeEvent(...item)
-              }
             }
           }
 }()
